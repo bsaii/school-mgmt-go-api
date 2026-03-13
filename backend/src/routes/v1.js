@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const { authenticateToken, handle404Error, csrfProtection, checkApiAccess } = require("../middlewares");
+const { authenticateToken, handle404Error, csrfProtection, checkApiAccess, validateServiceKey } = require("../middlewares");
+const { studentsInternalRoutes } = require("../modules/students/students-internal-router.js");
 const { studentsRoutes } = require("../modules/students/sudents-router.js");
 const { authRoutes } = require("../modules/auth/auth-router.js");
 const { rpRoutes } = require("../modules/roles-and-permissions/rp-router.js");
@@ -26,6 +27,7 @@ router.use("/leave", authenticateToken, csrfProtection, leaveRoutes);
 router.use("/classes", authenticateToken, csrfProtection, classesRoutes);
 router.use("/class-teachers", authenticateToken, csrfProtection, classTeacherRoutes);
 router.use("/sections", authenticateToken, csrfProtection, sectionRoutes);
+router.use("/internal/students", validateServiceKey, studentsInternalRoutes);
 router.use("/students", authenticateToken, csrfProtection, studentsRoutes);
 router.use("/notices", authenticateToken, csrfProtection, noticesRoutes);
 router.use("/staffs", authenticateToken, csrfProtection, staffsRoutes);
